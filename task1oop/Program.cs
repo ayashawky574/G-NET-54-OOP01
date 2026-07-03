@@ -20,7 +20,6 @@
             //Console.WriteLine(s2.Name);
             #endregion
 
-
             #region q2
             //Console.WriteLine(c1.Name);
             ////public modifier can be accessed every where
