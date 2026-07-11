@@ -40,39 +40,107 @@
             #endregion
 
             #region part02
-            Console.Write("Enter Movie Name : ");
-            string moveiName = Console.ReadLine();
-            TicketType type;
-            while (true)
+            //Console.Write("Enter Movie Name : ");
+            //string moveiName = Console.ReadLine();
+            //TicketType type;
+            //while (true)
+            //{
+            //Console.Write("Enter Ticket Type (0=Standard , 1 = VIP , 2 = MAX): ");
+            //    string input = Console.ReadLine();
+            //    if (Enum.TryParse<TicketType>(input,out type) && Enum.IsDefined(typeof(TicketType), type))
+            //    {
+            //        break;
+            //    }
+            //    Console.WriteLine("Invalid Type , try again.");
+            //}
+            //;
+
+            //Console.Write("Enter Seat Row (A , B , C ,..) : ");
+            //char.TryParse(Console.ReadLine().ToUpper(), out char SeatRow);
+            //Console.Write("Enter Seat Number : ");
+            //int.TryParse(Console.ReadLine(), out int SeatNumber);
+            //SeatLocation seat = new SeatLocation(SeatRow, SeatNumber);
+            //Console.Write("Enter Price : ");
+            //double.TryParse(Console.ReadLine(), out double price);
+            //Console.Write("Enter discountAmount  : ");
+            //double.TryParse(Console.ReadLine(), out double discountAmount);
+
+            //Ticket ticket = new Ticket(moveiName, type, seat, price);
+            //ticket.PrintTicket();
+
+            //ticket.ApplyDiscount(ref discountAmount);
+
+
+
+            #endregion
+
+            #region part02 assignment02
+            Console.WriteLine("============Ticket Booking============");
+            Cinema cinema = new Cinema();
+
+            for (int i = 1; i <= 3; i++)
             {
-            Console.Write("Enter Ticket Type (0=Standard , 1 = VIP , 2 = MAX): ");
-                string input = Console.ReadLine();
-                if (Enum.TryParse<TicketType>(input,out type) && Enum.IsDefined(typeof(TicketType), type))
+                Console.WriteLine($"Enter Data for Ticket 0{i} ");
+                Console.Write("Movei Name : ");
+                string moveiName = Console.ReadLine();
+                TicketType type;
+                while (true)
                 {
+                    Console.Write("Ticket Type (0 = Standard , 1 = VIP , 2 = MAX) : ");
+                    string input = Console.ReadLine();
+                    if (
+                        Enum.TryParse<TicketType>(input, out type)&&
+                        Enum.IsDefined(typeof(TicketType), type) 
+                        )
+                    { break; }
+
+                    Console.WriteLine("invalid type try again");
+
+                };
+                Console.Write("Seat Row (A-Z) : ");
+                char seatRow;
+                while (true)
+                {
+                    if (char.TryParse(Console.ReadLine().ToUpper(), out  seatRow) && seatRow >= 'A' && seatRow <= 'Z')
+                        break;
+                    Console.WriteLine("invalid input , Seat Row (A-Z) : ");
+                }
+
+                Console.Write("Seat Number : ");
+                int.TryParse(Console.ReadLine(), out int seatNumber);
+                SeatLocation seat = new SeatLocation(seatRow, seatNumber);
+                Console.Write("Enter Price : ");
+                double.TryParse(Console.ReadLine(), out double price);
+                Ticket ticket = new Ticket(moveiName, type, seat, price);
+                bool isAdded = cinema.AddTicket(ticket);
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("=============== All Tickets ===========");
+            for (int i = 0; i <3; i++)
+            {
+                Console.WriteLine($"Ticket #{i+1} | {cinema[i]}");
+            }
+
+            Console.WriteLine("========== Search By Movei =============");
+            Console.Write("Enter Movei Name TO Search : ");
+            string name = Console.ReadLine();
+            for (int i = 0; i < 3; i++)
+            {
+                if (cinema[i].MoveiName == name)
+                {
+                    Console.WriteLine($"Found : Ticket #{i + 1} | {cinema[i]}");
                     break;
                 }
-                Console.WriteLine("Invalid Type , try again.");
+                Console.WriteLine("Not Found");
             }
-            ;
-            
-            Console.Write("Enter Seat Row (A , B , C ,..) : ");
-            char.TryParse( Console.ReadLine().ToUpper() , out char SeatRow);
-            Console.Write("Enter Seat Number : ");
-            int.TryParse(Console.ReadLine(), out int SeatNumber);
-            SeatLocation seat = new SeatLocation(SeatRow , SeatNumber);
-            Console.Write("Enter Price : ");
-            double.TryParse(Console.ReadLine(), out double price);
-            Console.Write("Enter discountAmount  : ");
-            double.TryParse(Console.ReadLine(), out double discountAmount);
 
-                Ticket ticket = new Ticket(moveiName, type, seat, price);
-                ticket.PrintTicket();
-
-            ticket.ApplyDiscount(ref discountAmount);
-
-
-
-
+            Console.WriteLine();
+            Console.WriteLine("============ Statistics =========");
+            Console.WriteLine($"Total tickets sold : {Ticket.GetTotalTicketsSold()}");
+            Console.WriteLine($"booking reference 1 : {BookingHelper.GenerateBookingReference()}");
+            Console.WriteLine($"Group discount : {BookingHelper.CalcGroupDiscount(5,80)} EGP");
             #endregion
         }
     }

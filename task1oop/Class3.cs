@@ -8,18 +8,44 @@ namespace task1oop
 {
     internal class Ticket
     {
-        public string MoveiName { get; set; }
+        private string _moveiName;
         public TicketType Type { get; set; }
         public SeatLocation Seat { get; set; }
-        private double Price;
+        private double _price;
+        private static int _ticketCounter =0 ;
 
-       
+        public int TicketId
+        {
+            get; private set;
+        }
+       public string MoveiName { 
+            get => _moveiName;
+            set { if (string.IsNullOrWhiteSpace(value))
+                    return;
+                _moveiName = value;
+ }
+        }
+        public double Price {
+            get => _price;
+            set
+            {
+                if (value <= 0)
+                    return;
+                _price = value;
+            }
+        }
+
+        public static int GetTotalTicketsSold() => _ticketCounter;
+        
         public Ticket(string moveiname, TicketType type, SeatLocation seat, double price)
         {
             MoveiName = moveiname;
             Type = type;
             Seat = seat;
             Price = price;
+            _ticketCounter++;
+            TicketId = _ticketCounter;
+
         }
         public Ticket(string moveiname) 
             : this(moveiname ,TicketType.Standard , new SeatLocation('A',1) ,50)
@@ -27,10 +53,18 @@ namespace task1oop
           
         }
 
-        public double CalcTotal(double taxPercent)
+        public double PriceAfterTax
         {
-            double taxAmount = Price * taxPercent / 100;
-            return Price + taxAmount;
+            get {
+                double taxAmount = Price * 14 / 100;
+                return Price + taxAmount;
+            }
+            
+        }
+
+        public override string ToString()
+        {
+            return $"{_moveiName} | {Type} |seat : {Seat} |price : {_price} EGP | AfterTax : {PriceAfterTax} EGP";
         }
          public void ApplyDiscount(ref double discountAmount)
         {
@@ -44,7 +78,7 @@ namespace task1oop
 before Discount      :{beforeDiscount}
 ِAfter Discount      : {discountAmount}
 Prcie                : {Price}
-Total (14% Tax) : {CalcTotal(14)}");
+Total (14% Tax) : {PriceAfterTax}");
 
             
         }
